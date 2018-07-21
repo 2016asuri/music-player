@@ -1,14 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="musicApp">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<body ng-app="myNoteApp" ng-controller="myNoteCtrl">
+
+<body>
 
 <h2>Multi-Platform Music Player</h2>
 
+<div  ng-controller="musicCtrl">
+<ul>
+    <li ng-repeat="x in products">
+    		<span ng-click="playSong($index)">&#9658;</span>
+            {{x.name}}
+            {{x.platform}}
+            <span ng-click="removeItem($index)">&times;</span>
 
-<p>
-<button ng-click="add()">Add song</button>
-</p>
+    </li>
+</ul>
+<input ng-model="addSongName">
+<input ng-model="addSongPlatform">
+<input ng-model="addSongLink">
+<button ng-click="addItem()">Add</button>
+<p>{{errortext}}</p>
+</div>
 
 <script src = "player.js"></script>
 
