@@ -23,13 +23,18 @@ app.controller("musicCtrl", function($scope) {
         song_to_play = $scope.products[x]
         if(song_to_play.platform == 'YouTube'){
         	videoId = song_to_play.link;
-        	load()   
+        	youtube_load()   
+        }
+        else if(song_to_play.platform == 'Google Drive'){
+        	var driveLink = song_to_play.link;
+        	drive_play(driveLink)
+
         }
              
     } 
 
     var videoId;
-	function load()
+	function youtube_load()
 	{
 		if (typeof(YT) == 'undefined' || typeof(YT.Player) == 'undefined') {
 		   var tag = document.createElement('script');
@@ -50,7 +55,7 @@ app.controller("musicCtrl", function($scope) {
 	var player;
 	function onYouTubePlayer() 
 	{
-		player = new YT.Player('player', 
+		player = new YT.Player('youtube_player', 
 		{
 		height: '390',
 		width: '640',
@@ -79,6 +84,14 @@ app.controller("musicCtrl", function($scope) {
 	function stopVideo() 
 	{
 		player.stopVideo();
+	}
+
+
+	function drive_play(file_link){
+		var d_player = document.getElementById("drive_player");
+		d_player.style.visibility = "visible";
+		d_player.src = "https://drive.google.com/file/d/1PjMwTche8fahR1hxKZeBdKxb45rkv6oT/preview"
+
 	}    
 });
 
