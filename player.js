@@ -21,6 +21,9 @@ app.controller("musicCtrl",  function($scope, $http) {
         } else {
             $scope.errortext = "The item is already in your music collection.";
         }
+        document.getElementById("name").value = "";
+        document.getElementById("platform").value="";
+        document.getElementById("id").value="";
 
     }
 
@@ -38,18 +41,27 @@ app.controller("musicCtrl",  function($scope, $http) {
         $scope.errortext = "";
         var song_to_play = $scope.songs[x];
         if(song_to_play.platform == 'YouTube'){
+        	document.getElementById("youtube_player").style.visibility="visible";
         	document.getElementById("drive_player").style.visibility="hidden";
+			document.getElementById("drive_player").src = null;
+
         	videoId = youtube_id_from_link(song_to_play.id);
-        	alert(videoId)
-        	youtube_load()   
+
+        	if(player == undefined) youtube_load();
+        	else {
+        		stopVideo();
+        		player.loadVideoById(videoId);
+        	}   
         }
         else if(song_to_play.platform == 'Google Drive'){
+        	if(player != undefined) stopVideo();
         	document.getElementById("youtube_player").style.visibility="hidden";
+        	document.getElementById("drive_player").style.visibility="visible";
         	var driveLink = drive_id_from_link(song_to_play.id);
         	drive_play(driveLink)
 
         }
-        else if(song_to_play.platform == 'SoundCloud' || 
+        else if(song_to_play.platform== 'SoundCloud' || 
         		song_to_play.platform == 'AudioMack'){
         	window.open(song_to_play.id, '_blank');
         }

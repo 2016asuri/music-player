@@ -17,9 +17,16 @@
 
     </li>
 </ul>
-<input ng-model="addSongName" placeholder="Song name">
-<input ng-model="addSongPlatform" placeholder="Song platform">
-<input ng-model="addSongLink" placeholder="Song link">
+<input id="name" ng-model="addSongName" placeholder="Song name">
+<select id="platform" ng-model="addSongPlatform">
+  <option value="YouTube">YouTube</option>
+  <option value="Spotify">Spotify</option>
+  <option value="Google Drive">Google Drive</option>
+  <option value="SoundCloud">SoundCloud</option>
+  <option value="AudioMack">AudioMack</option>
+</select>
+<!-- <input ng-model="addSongPlatform" placeholder="Song platform">-->
+<input id="id" ng-model="addSongLink" placeholder="Song link">
 <button ng-click="addItem()">Add</button>
 <p>{{errortext}}</p>
 
