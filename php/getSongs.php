@@ -8,7 +8,7 @@ $password = "p@ssw0rd";
 $database = "music_player_db";
 
 $conn = new mysqli($servername, $username, $password, $database);
-$sql = "SELECT * FROM song_table";
+$sql = "SELECT name, id, platform FROM song_table";
 $results = mysqli_query($conn, $sql);
 $data = array();
 
