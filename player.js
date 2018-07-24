@@ -1,9 +1,7 @@
 var app = angular.module('musicApp', []);
-app.controller("musicCtrl", function($scope, $http) {
-	$http.get("php/songs_mysql.php").then(function(response){
-		//alert(response.data.records);
-		console.log(response.data.data);
-        $scope.songs = response.data.records;
+app.controller("musicCtrl",  function($scope, $http) {
+	$http.post("http://localhost:8000/php/songs_mysql.php").then(function(response){
+        $scope.songs = response.data;
     });
 
     /*$scope.songs = [{name: 'Song1', platform: 'YouTube', link:'bWwBJqVYSZI'}, 
