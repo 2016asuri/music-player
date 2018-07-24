@@ -3,13 +3,13 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<body>
+<body ng-controller="musicCtrl">
 
 <h2>Multi-Platform Music Player</h2>
 
-<div  ng-controller="musicCtrl">
+
 <ul>
-    <li ng-repeat="x in products">
+    <li ng-repeat="x in songs">
     		<span ng-click="playSong($index)">&#9658;</span>
             {{x.name}}
             {{x.platform}}
@@ -22,7 +22,7 @@
 <input ng-model="addSongLink">
 <button ng-click="addItem()">Add</button>
 <p>{{errortext}}</p>
-</div>
+
 
 <div id="youtube_player"></div>
 <iframe id="drive_player" style="visibility: hidden"
@@ -30,7 +30,9 @@
   width="400"     
   height="200"></iframe>
 
+<!-- <script src="https://sdk.scdn.co/spotify-player.js"></script> -->
 <script src = "player.js"></script>
+
 
 </body>
 </html>

@@ -1,8 +1,15 @@
 var app = angular.module('musicApp', []);
-app.controller("musicCtrl", function($scope) {
-    $scope.products = [{name: 'Song1', platform: 'YouTube', link:'bWwBJqVYSZI'}, 
-    				   {name: 'Song2', platform: 'Google Drive', link:'0001'}, 
+app.controller("musicCtrl", function($scope, $http) {
+	$http.get("php/songs_mysql.php").then(function(response){
+		//alert(response.data.records);
+		console.log(response.data.data);
+        $scope.songs = response.data.records;
+    });
+
+    /*$scope.songs = [{name: 'Song1', platform: 'YouTube', link:'bWwBJqVYSZI'}, 
+    				   {name: 'Song2', platform: 'Google Drive', link:'https://drive.google.com/file/d/1PjMwTche8fahR1hxKZeBdKxb45rkv6oT/preview'}, 
     				   {name: 'Song3', platform: 'Spotify', link:'0002'}];
+	*/
     $scope.addItem = function () {
         $scope.errortext = "";
         if (!$scope.addSongName || !$scope.addSongPlatform || !$scope.addSongLink) {return;}
@@ -13,6 +20,7 @@ app.controller("musicCtrl", function($scope) {
             $scope.errortext = "The item is already in your music collection.";
         }
     }
+
     $scope.removeItem = function (x) {
         $scope.errortext = "";
         $scope.products.splice(x, 1);
@@ -22,10 +30,12 @@ app.controller("musicCtrl", function($scope) {
         $scope.errortext = "";
         song_to_play = $scope.products[x]
         if(song_to_play.platform == 'YouTube'){
+        	document.getElementById("drive_player").style.visibility="hidden";
         	videoId = song_to_play.link;
         	youtube_load()   
         }
         else if(song_to_play.platform == 'Google Drive'){
+        	document.getElementById("youtube_player").style.visibility="hidden";
         	var driveLink = song_to_play.link;
         	drive_play(driveLink)
 
@@ -90,9 +100,12 @@ app.controller("musicCtrl", function($scope) {
 	function drive_play(file_link){
 		var d_player = document.getElementById("drive_player");
 		d_player.style.visibility = "visible";
-		d_player.src = "https://drive.google.com/file/d/1PjMwTche8fahR1hxKZeBdKxb45rkv6oT/preview"
+		d_player.src = file_link; 
 
 	}    
+
+
+
 });
 
 
