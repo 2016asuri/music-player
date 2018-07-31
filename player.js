@@ -61,8 +61,20 @@ app.controller("musicCtrl",  function($scope, $http) {
         	drive_play(driveLink)
 
         }
+        else if(song_to_play.platform == 'Spotify'){
+            if(player != undefined) stopVideo();
+            document.getElementById("youtube_player").style.visibility="hidden";
+            document.getElementById("drive_player").style.visibility="hidden";
+            document.getElementById("drive_player").src = null;
+            //spotify_play(song_to_play.id)
+            play();
+        }
         else if(song_to_play.platform== 'SoundCloud' || 
         		song_to_play.platform == 'AudioMack'){
+            if(player != undefined) stopVideo();
+            document.getElementById("youtube_player").style.visibility="hidden";
+            document.getElementById("drive_player").style.visibility="hidden";
+            document.getElementById("drive_player").src = null;
         	window.open(song_to_play.id, '_blank');
         }
              
@@ -139,6 +151,142 @@ app.controller("musicCtrl",  function($scope, $http) {
 		d_player.src = file_link; 
 
 	}    
+
+
+
+    /// spotify access code: BQDMiNHs_Gq6DagR28WlL9jrbqQ_8cDBER5aXubvEUHt5wkSviuG77-SNXGBorYOSx1EwVljlcevoglSVwgk99BN0q2LOWbOvLb1ygY5xh_wMU9MIolgvzxxnnBAQdsaGlMMBvYVqmjHvDLZnSVHsde-3whV25pCJ46SgDUIIe3QbeTgFtaLHw
+/*    window.onSpotifyWebPlaybackSDKReady = () => {
+      const token = 'BQDMiNHs_Gq6DagR28WlL9jrbqQ_8cDBER5aXubvEUHt5wkSviuG77-SNXGBorYOSx1EwVljlcevoglSVwgk99BN0q2LOWbOvLb1ygY5xh_wMU9MIolgvzxxnnBAQdsaGlMMBvYVqmjHvDLZnSVHsde-3whV25pCJ46SgDUIIe3QbeTgFtaLHw';
+      const player = new Spotify.Player({
+        name: 'Web Playback SDK Quick Start Player',
+        getOAuthToken: cb => { cb(token); }
+      });
+
+      // Error handling
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+      // Playback status updates
+      player.addListener('player_state_changed', state => { console.log(state); });
+
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+      });
+
+      // Not Ready
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+      });
+
+      // Connect to the player!
+      player.connect();
+
+      const play = ({
+      spotify_uri,
+      playerInstance: {
+        _options: {
+          getOAuthToken,
+          id
+        }
+      }
+    }) =>  {
+       getOAuthToken(access_token => {
+        fetch("https://api.spotify.com/v1/me/player/play?device_id=${id}", {
+          method: 'PUT',
+          body: JSON.stringify({ uris: [spotify_uri] }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+          },
+        });
+      });
+    };
+
+    play({
+      playerInstance: new Spotify.Player({ name: "..." }),
+      spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
+    });
+    };*/
+
+        // Get the hash of the url
+    const hash = window.location.hash
+    .substring(1)
+    .split('&')
+    .reduce(function (initial, item) {
+      if (item) {
+        var parts = item.split('=');
+        initial[parts[0]] = decodeURIComponent(parts[1]);
+      }
+      return initial;
+    }, {});
+    window.location.hash = '';
+
+    // Set token
+    let _token = hash.access_token;
+    
+    const authEndpoint = 'https://accounts.spotify.com/authorize';
+
+    // Replace with your app's client ID, redirect URI and desired scopes
+    const clientId = '7695986a5d7446fab30e5366b1ddfd4f';
+    //const redirectUri = 'https://spotify-web-playback.glitch.me';
+    const scopes = [
+      'streaming',
+      'user-read-birthdate',
+      'user-read-private',
+      'user-modify-playback-state'
+    ];
+
+    // Set up the Web Playback SDK
+
+    window.onSpotifyPlayerAPIReady = () => {
+      const player = new Spotify.Player({
+        name: 'Web Playback SDK Template',
+        getOAuthToken: cb => { cb(_token); }
+      });
+
+      // Error handling
+      player.on('initialization_error', e => console.error(e));
+      player.on('authentication_error', e => console.error(e));
+      player.on('account_error', e => console.error(e));
+      player.on('playback_error', e => console.error(e));
+
+      // Playback status updates
+      player.on('player_state_changed', state => {
+        console.log(state)
+        $('#current-track').attr('src', state.track_window.current_track.album.images[0].url);
+        $('#current-track-name').text(state.track_window.current_track.name);
+      });
+
+      // Ready
+      player.on('ready', data => {
+        console.log('Ready with Device ID', data.device_id);
+        
+        // Play a track using our new device ID
+        play(data.device_id);
+      });
+
+      // Connect to the player!
+      player.connect();
+    }
+
+    // Play a specified track on the Web Playback SDK's device ID
+    function play(device_id) {
+      $.ajax({
+       url: "https://api.spotify.com/v1/me/player/play?device_id=" + device_id,
+       type: "PUT",
+       data: '{"uris": ["spotify:track:5ya2gsaIhTkAuWYEMB0nw5"]}',
+       beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + _token );},
+       success: function(data) { 
+         console.log(data);
+       }
+      });
+    }
+
+
+
 
 
 

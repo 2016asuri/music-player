@@ -21,4 +21,6 @@ if(isset($_GET['name']) && isset($_GET['platform']) && isset($_GET['link'])){
 
   echo $json_response = json_encode($result);
   }
+
+$conn->close();
 ?>  
