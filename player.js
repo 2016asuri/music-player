@@ -226,12 +226,4 @@ app.controller("musicCtrl",  function($scope, $http) {
        }
       });
     }
-
-
-
-
-
-
 });
-
-
