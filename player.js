@@ -153,64 +153,6 @@ app.controller("musicCtrl",  function($scope, $http) {
 	}    
 
 
-
-    /// spotify access code: BQDMiNHs_Gq6DagR28WlL9jrbqQ_8cDBER5aXubvEUHt5wkSviuG77-SNXGBorYOSx1EwVljlcevoglSVwgk99BN0q2LOWbOvLb1ygY5xh_wMU9MIolgvzxxnnBAQdsaGlMMBvYVqmjHvDLZnSVHsde-3whV25pCJ46SgDUIIe3QbeTgFtaLHw
-/*    window.onSpotifyWebPlaybackSDKReady = () => {
-      const token = 'BQDMiNHs_Gq6DagR28WlL9jrbqQ_8cDBER5aXubvEUHt5wkSviuG77-SNXGBorYOSx1EwVljlcevoglSVwgk99BN0q2LOWbOvLb1ygY5xh_wMU9MIolgvzxxnnBAQdsaGlMMBvYVqmjHvDLZnSVHsde-3whV25pCJ46SgDUIIe3QbeTgFtaLHw';
-      const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb(token); }
-      });
-
-      // Error handling
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-      // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
-
-      // Ready
-      player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      // Not Ready
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-      });
-
-      // Connect to the player!
-      player.connect();
-
-      const play = ({
-      spotify_uri,
-      playerInstance: {
-        _options: {
-          getOAuthToken,
-          id
-        }
-      }
-    }) =>  {
-       getOAuthToken(access_token => {
-        fetch("https://api.spotify.com/v1/me/player/play?device_id=${id}", {
-          method: 'PUT',
-          body: JSON.stringify({ uris: [spotify_uri] }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-          },
-        });
-      });
-    };
-
-    play({
-      playerInstance: new Spotify.Player({ name: "..." }),
-      spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr',
-    });
-    };*/
-
         // Get the hash of the url
     const hash = window.location.hash
     .substring(1)
